@@ -728,10 +728,13 @@ fn prepare_rustc(
         base.env("CARGO_TARGET_TMPDIR", tmp.display().to_string());
 
         if cx.bcx.config.nightly_features_allowed {
+            eprint!("Yerke: is_primary: {is_primary}");
+            eprint!("Yerke: is_workspace: {is_workspace}");
             // Use a relative path and limit to integration tests and benchmarks in hopes
             // that it conveys to the user that the meaning of this value is a bit fuzzy
             // (very different meaning in the original repo vs once published).
             let cargo_workspace_dir = if is_primary && is_workspace {
+                eprint!("Yerke: is_primary: {is_primary}");
                 pathdiff::diff_paths(cx.bcx.ws.root(), unit.pkg.root())
                     .expect("both paths are absolute")
                     .display()
@@ -740,6 +743,10 @@ fn prepare_rustc(
                 // path from unit.pkg.root() to unit.pkg.root()
                 ".".to_string()
             };
+            eprint!("Yerke: cargo_workspace_dir: {cargo_workspace_dir}");
+            eprint!("Yerke: cx.bcx.ws.root(): {:?}", cx.bcx.ws.root());
+            eprint!("Yerke: unit.pkg.root(): {:?}", unit.pkg.root());
+            // panic!("hello");
             base.env("CARGO_WORKSPACE_DIR", cargo_workspace_dir);
         }
     }
